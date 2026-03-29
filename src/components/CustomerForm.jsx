@@ -173,9 +173,9 @@ export default function CustomerForm({ onSubmit, onDashboard }) {
       >
         <div
           style={{
-            maxWidth: '560px',
+            maxWidth: '900px',
             margin: '0 auto',
-            padding: '1rem 1.25rem',
+            padding: '1rem 1.5rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -201,9 +201,9 @@ export default function CustomerForm({ onSubmit, onDashboard }) {
         </div>
       </div>
 
-      {/* ── Form card ── */}
-      <div style={{ maxWidth: '560px', margin: '0 auto', padding: '1.25rem' }}>
-        <div style={card} className="fade-in">
+      {/* ── Form content ── */}
+      <div style={{ maxWidth: '900px', margin: '0 auto', padding: '1.5rem' }}>
+        <div style={{ ...card, borderRadius: '0', background: 'transparent', boxShadow: 'none', border: 'none', padding: 0 }} className="fade-in">
 
           <div style={{ marginBottom: '1.5rem' }}>
             <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.4rem', color: '#5E3A10', margin: 0 }}>
