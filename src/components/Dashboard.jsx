@@ -252,6 +252,7 @@ export default function Dashboard({ customers, onBack, onDelete }) {
           position: 'sticky', top: 0, zIndex: 20,
           background: '#fff',
           boxShadow: '0 1px 0 #E5E7EB',
+          paddingTop: 'env(safe-area-inset-top)',
         }}
       >
         <div

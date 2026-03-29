@@ -168,6 +168,7 @@ export default function CustomerForm({ onSubmit, onDashboard }) {
           background: 'rgba(255,255,255,0.95)',
           backdropFilter: 'blur(8px)',
           boxShadow: '0 1px 0 #E8DFD0',
+          paddingTop: 'env(safe-area-inset-top)',
         }}
       >
         <div
