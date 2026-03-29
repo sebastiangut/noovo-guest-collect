@@ -20,7 +20,7 @@ const COUNTRIES = [
 // ── Input + label wrapper ──────────────────────────────────────────────
 function Field({ label, error, required, children }) {
   return (
-    <div style={{ marginBottom: '1rem' }}>
+    <div style={{ marginBottom: '0' }}>
       <label
         style={{
           display: 'block',
@@ -147,53 +147,38 @@ export default function CustomerForm({ onSubmit, onDashboard }) {
     </div>
   )
 
-  // ── Shared styles ──────────────────────────────────────────────────
-  const card = {
-    background: '#fff',
-    borderRadius: '24px',
-    boxShadow: '0 1px 8px rgba(0,0,0,0.06)',
-    border: '1px solid rgba(201,169,110,0.2)',
-    padding: '1.5rem',
-  }
+  const inp = (hasErr) => ({
+    ...baseInput(hasErr),
+    padding: '9px 12px',
+  })
 
   return (
-    <div style={{ minHeight: '100dvh', background: '#F5F0E8', paddingBottom: '3rem' }}>
+    <div style={{
+      height: '100dvh',
+      background: '#F5F0E8',
+      display: 'flex',
+      flexDirection: 'column',
+      paddingTop: 'env(safe-area-inset-top)',
+      paddingBottom: 'env(safe-area-inset-bottom)',
+    }}>
 
       {/* ── Header ── */}
-      <div
-        style={{
-          position: 'sticky',
-          top: 0,
-          zIndex: 20,
-          background: 'rgba(255,255,255,0.95)',
-          backdropFilter: 'blur(8px)',
-          boxShadow: '0 1px 0 #E8DFD0',
-          paddingTop: 'env(safe-area-inset-top)',
-        }}
-      >
-        <div
-          style={{
-            maxWidth: '900px',
-            margin: '0 auto',
-            padding: '1rem 1.5rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <NoovoLogo scale={0.85} />
-          <button
-            onClick={openPin}
-            aria-label="Staff dashboard"
-            style={{
-              padding: '8px',
-              borderRadius: '50%',
-              border: 'none',
-              background: 'none',
-              cursor: 'pointer',
-              color: '#9CA3AF',
-            }}
-          >
+      <div style={{
+        flexShrink: 0,
+        background: 'rgba(255,255,255,0.95)',
+        backdropFilter: 'blur(8px)',
+        boxShadow: '0 1px 0 #E8DFD0',
+      }}>
+        <div style={{
+          maxWidth: '1200px', margin: '0 auto',
+          padding: '0.6rem 1.5rem',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        }}>
+          <NoovoLogo scale={0.82} />
+          <button onClick={openPin} aria-label="Staff dashboard" style={{
+            padding: '8px', borderRadius: '50%', border: 'none',
+            background: 'none', cursor: 'pointer', color: '#9CA3AF',
+          }}>
             <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M4 6h16M4 12h16M4 18h16"/>
             </svg>
@@ -201,136 +186,119 @@ export default function CustomerForm({ onSubmit, onDashboard }) {
         </div>
       </div>
 
-      {/* ── Form content ── */}
-      <div style={{ maxWidth: '900px', margin: '0 auto', padding: '1.5rem' }}>
-        <div style={{ ...card, borderRadius: '0', background: 'transparent', boxShadow: 'none', border: 'none', padding: 0 }} className="fade-in">
+      {/* ── Two-column form ── */}
+      <div style={{
+        flex: 1,
+        overflow: 'hidden',
+        maxWidth: '1200px',
+        margin: '0 auto',
+        width: '100%',
+        padding: '0.75rem 1.5rem',
+        display: 'flex',
+        gap: '1.25rem',
+      }} className="fade-in">
 
-          <div style={{ marginBottom: '1.5rem' }}>
-            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.4rem', color: '#5E3A10', margin: 0 }}>
+        {/* ── Left column: input fields ── */}
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+
+          <div style={{ marginBottom: '0.25rem' }}>
+            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: '1.2rem', color: '#5E3A10', margin: 0 }}>
               Înregistrare Client
             </h2>
-            <p style={{ color: '#9CA3AF', fontSize: '0.82rem', marginTop: '4px' }}>
-              Completați câmpurile de mai jos • câmpurile cu * sunt obligatorii
+            <p style={{ color: '#9CA3AF', fontSize: '0.75rem', margin: '2px 0 0' }}>
+              Câmpurile marcate cu * sunt obligatorii
             </p>
           </div>
 
-          {/* Nume */}
           <Field label="Nume și Prenume" error={errors.nume} required>
-            <input
-              type="text" value={form.nume}
-              onChange={e => set('nume', e.target.value)}
-              placeholder="ex: Ion Popescu"
-              style={baseInput(errors.nume)}
-            />
+            <input type="text" value={form.nume} onChange={e => set('nume', e.target.value)}
+              placeholder="ex: Ion Popescu" style={inp(errors.nume)} />
           </Field>
 
-          {/* Email */}
           <Field label="Adresă Email" error={errors.email} required>
-            <input
-              type="email" value={form.email}
-              onChange={e => set('email', e.target.value)}
-              placeholder="adresa@email.ro"
-              style={baseInput(errors.email)}
-            />
+            <input type="email" value={form.email} onChange={e => set('email', e.target.value)}
+              placeholder="adresa@email.ro" style={inp(errors.email)} />
           </Field>
 
-          {/* Telefon */}
           <Field label="Număr de Telefon" error={errors.telefon} required>
-            <input
-              type="tel" value={form.telefon}
-              onChange={e => set('telefon', e.target.value)}
-              placeholder="+40 7xx xxx xxx"
-              style={baseInput(errors.telefon)}
-            />
+            <input type="tel" value={form.telefon} onChange={e => set('telefon', e.target.value)}
+              placeholder="+40 7xx xxx xxx" style={inp(errors.telefon)} />
           </Field>
 
-          {/* Sex */}
           <Field label="Sex" error={errors.sex} required>
-            <div style={{ display: 'flex', gap: '12px' }}>
+            <div style={{ display: 'flex', gap: '10px' }}>
               {['Masculin', 'Feminin'].map(s => (
-                <button
-                  key={s} type="button"
-                  onClick={() => set('sex', s)}
-                  style={{
-                    flex: 1,
-                    padding: '14px',
-                    borderRadius: '12px',
-                    border: `1.5px solid ${form.sex === s ? '#8B6420' : '#E5E0D8'}`,
-                    background: form.sex === s ? '#8B6420' : '#fff',
-                    color: form.sex === s ? '#fff' : '#374151',
-                    fontSize: '1rem',
-                    fontWeight: 500,
-                    cursor: 'pointer',
-                    transition: 'all 0.15s',
-                    fontFamily: 'inherit',
-                  }}
-                >
+                <button key={s} type="button" onClick={() => set('sex', s)} style={{
+                  flex: 1, padding: '9px 12px', borderRadius: '12px',
+                  border: `1.5px solid ${form.sex === s ? '#8B6420' : '#E5E0D8'}`,
+                  background: form.sex === s ? '#8B6420' : '#fff',
+                  color: form.sex === s ? '#fff' : '#374151',
+                  fontSize: '1rem', fontWeight: 500, cursor: 'pointer',
+                  transition: 'all 0.15s', fontFamily: 'inherit',
+                }}>
                   {s === 'Masculin' ? '♂ Masculin' : '♀ Feminin'}
                 </button>
               ))}
             </div>
           </Field>
 
-          {/* Vârstă + Localitate */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
             <Field label="Vârstă" error={errors.varsta} required>
-              <input
-                type="number" value={form.varsta} min={18} max={120}
+              <input type="number" value={form.varsta} min={18} max={120}
                 onChange={e => set('varsta', e.target.value)}
-                placeholder="ex: 35"
-                style={baseInput(errors.varsta)}
-              />
+                placeholder="ex: 35" style={inp(errors.varsta)} />
             </Field>
             <Field label="Localitate" error={errors.localitate} required>
-              <input
-                type="text" value={form.localitate}
+              <input type="text" value={form.localitate}
                 onChange={e => set('localitate', e.target.value)}
-                placeholder="ex: Oradea"
-                style={baseInput(errors.localitate)}
-              />
+                placeholder="ex: Oradea" style={inp(errors.localitate)} />
             </Field>
           </div>
 
-          {/* Țară */}
           <Field label="Țară" error={errors.tara} required>
-            <select
-              value={form.tara}
-              onChange={e => set('tara', e.target.value)}
-              style={{ ...baseInput(errors.tara), appearance: 'auto' }}
-            >
+            <select value={form.tara} onChange={e => set('tara', e.target.value)}
+              style={{ ...inp(errors.tara), appearance: 'auto' }}>
               {COUNTRIES.map((c, i) => (
                 <option key={i} value={c} disabled={c.startsWith('──')}>{c}</option>
               ))}
             </select>
           </Field>
+        </div>
 
-          {/* Semnătură */}
-          <Field label="Semnătură" error={errors.sig} required>
-            <SignaturePad
-              onChange={(data, cleared) => {
-                setSig(cleared ? null : data)
-                if (!cleared) setErrors(p => ({ ...p, sig: null }))
-              }}
-            />
-          </Field>
+        {/* ── Right column: signature + GDPR + submit ── */}
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+
+          {/* Semnătură — flex: 1 to fill height */}
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+            <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 500, color: '#4A3F30', marginBottom: '6px' }}>
+              Semnătură <span style={{ color: '#ef4444' }}>*</span>
+            </label>
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+              <SignaturePad
+                fillHeight
+                onChange={(data, cleared) => {
+                  setSig(cleared ? null : data)
+                  if (!cleared) setErrors(p => ({ ...p, sig: null }))
+                }}
+              />
+            </div>
+            {errors.sig && <p style={{ color: '#ef4444', fontSize: '0.75rem', marginTop: '4px' }}>{errors.sig}</p>}
+          </div>
 
           {/* GDPR */}
-          <div
-            style={{
-              marginBottom: '1.5rem',
-              padding: '1rem',
-              borderRadius: '16px',
-              border: `1.5px solid ${errors.gdpr ? '#fca5a5' : '#FDE68A'}`,
-              background: errors.gdpr ? '#fef2f2' : '#FFFBEB',
-            }}
-          >
-            <label style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', cursor: 'pointer' }}>
-              <input
-                type="checkbox" checked={gdpr}
+          <div style={{
+            flexShrink: 0,
+            padding: '0.6rem 0.75rem',
+            borderRadius: '12px',
+            border: `1.5px solid ${errors.gdpr ? '#fca5a5' : '#FDE68A'}`,
+            background: errors.gdpr ? '#fef2f2' : '#FFFBEB',
+          }}>
+            <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', cursor: 'pointer' }}>
+              <input type="checkbox" checked={gdpr}
                 onChange={e => { setGdpr(e.target.checked); setErrors(p => ({ ...p, gdpr: null })) }}
-                style={{ width: '20px', height: '20px', marginTop: '2px', flexShrink: 0, accentColor: '#8B6420' }}
+                style={{ width: '18px', height: '18px', marginTop: '2px', flexShrink: 0, accentColor: '#8B6420' }}
               />
-              <span style={{ fontSize: '0.78rem', lineHeight: 1.6, color: '#4B5563' }}>
+              <span style={{ fontSize: '0.72rem', lineHeight: 1.5, color: '#4B5563' }}>
                 Sunt de acord cu <strong>prelucrarea datelor cu caracter personal</strong> în conformitate cu
                 Regulamentul (UE) 2016/679 (GDPR). Datele vor fi utilizate exclusiv pentru comunicări de
                 marketing ale <strong>NOO'VO Resto Lounge</strong> și nu vor fi transmise terților.
@@ -338,32 +306,21 @@ export default function CustomerForm({ onSubmit, onDashboard }) {
                 <span style={{ color: '#ef4444' }}>*</span>
               </span>
             </label>
-            {errors.gdpr && (
-              <p style={{ color: '#ef4444', fontSize: '0.75rem', marginTop: '8px', marginLeft: '32px' }}>
-                {errors.gdpr}
-              </p>
-            )}
+            {errors.gdpr && <p style={{ color: '#ef4444', fontSize: '0.72rem', marginTop: '4px', marginLeft: '28px' }}>{errors.gdpr}</p>}
           </div>
 
           {/* Submit */}
-          <button
-            onClick={handleSubmit}
-            disabled={loading}
-            style={{
-              width: '100%',
-              padding: '16px',
-              borderRadius: '16px',
-              border: 'none',
-              background: loading ? '#D1B896' : 'linear-gradient(135deg, #8B6420 0%, #C9A96E 100%)',
-              color: '#fff',
-              fontSize: '1.05rem',
-              fontWeight: 600,
-              cursor: loading ? 'default' : 'pointer',
-              transition: 'opacity 0.2s, transform 0.1s',
-              fontFamily: 'inherit',
-              boxShadow: '0 4px 12px rgba(139,100,32,0.3)',
-            }}
-          >
+          <button onClick={handleSubmit} disabled={loading} style={{
+            flexShrink: 0,
+            width: '100%', padding: '14px',
+            borderRadius: '14px', border: 'none',
+            background: loading ? '#D1B896' : 'linear-gradient(135deg, #8B6420 0%, #C9A96E 100%)',
+            color: '#fff', fontSize: '1rem', fontWeight: 600,
+            cursor: loading ? 'default' : 'pointer',
+            transition: 'opacity 0.2s',
+            fontFamily: 'inherit',
+            boxShadow: '0 4px 12px rgba(139,100,32,0.3)',
+          }}>
             {loading ? 'Se salvează...' : 'Trimite înregistrarea'}
           </button>
         </div>

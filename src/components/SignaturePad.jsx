@@ -1,9 +1,10 @@
 import { useRef, useState, useCallback, useEffect } from 'react'
 
-export default function SignaturePad({ onChange }) {
-  const canvasRef = useRef(null)
-  const drawing   = useRef(false)
-  const lastPt    = useRef(null)
+export default function SignaturePad({ onChange, fillHeight = false }) {
+  const canvasRef    = useRef(null)
+  const wrapperRef   = useRef(null)
+  const drawing      = useRef(false)
+  const lastPt       = useRef(null)
   const [empty, setEmpty] = useState(true)
   const dpr = window.devicePixelRatio || 1
 
@@ -13,7 +14,7 @@ export default function SignaturePad({ onChange }) {
     if (!canvas) return
     const rect = canvas.parentElement.getBoundingClientRect()
     const w = rect.width
-    const h = 130
+    const h = fillHeight ? rect.height : 130
     canvas.style.width  = w + 'px'
     canvas.style.height = h + 'px'
     canvas.width  = w * dpr
@@ -24,7 +25,7 @@ export default function SignaturePad({ onChange }) {
     ctx.lineJoin   = 'round'
     ctx.lineWidth  = 2.2
     ctx.strokeStyle = '#1C1C1C'
-  }, [dpr])
+  }, [dpr, fillHeight])
 
   useEffect(() => {
     initCanvas()
@@ -103,7 +104,7 @@ export default function SignaturePad({ onChange }) {
   }
 
   return (
-    <div>
+    <div ref={wrapperRef} style={fillHeight ? { flex: 1, display: 'flex', flexDirection: 'column' } : {}}>
       <div
         style={{
           position: 'relative',
@@ -111,7 +112,7 @@ export default function SignaturePad({ onChange }) {
           borderRadius: '12px',
           background: '#fff',
           overflow: 'hidden',
-          minHeight: '130px',
+          ...(fillHeight ? { flex: 1 } : { minHeight: '130px' }),
         }}
       >
         <canvas ref={canvasRef} className="sig-canvas" />
