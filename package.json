@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "npx convex codegen",
     "build": "vite build",
     "preview": "vite preview",
     "convex:dev": "convex dev",
